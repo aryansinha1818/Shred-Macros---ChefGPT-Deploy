@@ -17,7 +17,7 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-aapp.use(
+app.use(
   cors({
     origin: true,
     credentials: true,
