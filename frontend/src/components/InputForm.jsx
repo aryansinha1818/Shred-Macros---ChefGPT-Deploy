@@ -18,7 +18,7 @@ export default function InputForm({ setIsOpen }) {
     let requestData = {};
 
     if (isSignUp) {
-      endpoint = "signp";
+      endpoint = "signup";
       requestData = { fullname, email, password };
     } else {
       endpoint = "login";

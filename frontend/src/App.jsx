@@ -12,7 +12,7 @@ const API = import.meta.env.VITE_API_BASE_URL;
 
 const getAllRecipes = async () => {
   try {
-    const res = await axios.get("${API}/recipe");
+    const res = await axios.get(`${API}/recipe`);
     return res.data;
   } catch (error) {
     console.error(error.message);
@@ -23,7 +23,7 @@ const getAllRecipes = async () => {
 const getMyRecipe = async () => {
   try {
     const token = localStorage.getItem("token");
-    const res = await axios.get("${API}/recipe/myRecipe", {
+    const res = await axios.get(`${API}/recipe/myRecipe`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
