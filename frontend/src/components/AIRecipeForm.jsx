@@ -39,7 +39,7 @@ const AIRecipeChat = () => {
     setChatStarted(true);
 
     try {
-      const response = await axios.post("http://${API}/ai-chef/", {
+      const response = await axios.post(`${API}/ai-chef/`, {
         type,
         ingredients: ingredients.split(",").map((i) => i.trim()),
         time: prepTime,
@@ -90,7 +90,7 @@ const AIRecipeChat = () => {
     setNewMessage("");
 
     try {
-      const response = await axios.post("http://${API}/ai-chef/chat", {
+      const response = await axios.post(`${API}/ai-chef/chat`, {
         message: newMessage,
         session_id: sessionId,
         context: messages.map((msg) => ({

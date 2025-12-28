@@ -14,24 +14,23 @@ const PORT = process.env.PORT || 5001;
 
 connectDB();
 
-// 🔴 BODY PARSERS FIRST
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 🔴 CORS MUST BE HERE (BEFORE ROUTES)
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://shred-macros-chef-gpt-deploy.vercel.app",
+    ],
     credentials: true,
   })
 );
 
-// 🔴 STATIC
 app.use(cookieParser());
 app.use(express.static("public"));
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
-// 🔴 ROUTES LAST
 app.use("/recipe", recipe);
 app.use("/user", user);
 app.use("/ai-chef", ai);

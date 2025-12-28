@@ -17,7 +17,7 @@ export default function EditRecipe() {
 
   useEffect(() => {
     const getData = async () => {
-      await axios.get(`http://${API}/recipe/${id}`).then((response) => {
+      await axios.get(`${API}/recipe/${id}`).then((response) => {
         let res = response.data;
         setRecipeData({
           title: res.title,
