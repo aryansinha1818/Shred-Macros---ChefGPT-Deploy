@@ -18,7 +18,7 @@ export default function InputForm({ setIsOpen }) {
     let requestData = {};
 
     if (isSignUp) {
-      endpoint = "signUp";
+      endpoint = "signp";
       requestData = { fullname, email, password };
     } else {
       endpoint = "login";
@@ -28,19 +28,16 @@ export default function InputForm({ setIsOpen }) {
     try {
       const response = await axios.post(`${API}/user/${endpoint}`, requestData);
 
-      // Save auth data
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
       setError("");
 
       if (isSignUp) {
-        // ✅ Signup success
         setSuccessMsg("✅ Account created successfully. Please login.");
         setIsSignUp(false);
-        resetForm(false); // keep success message
+        resetForm(false);
       } else {
-        // ✅ Login success
         setSuccessMsg("✅ Login successful!");
         setTimeout(() => {
           setIsOpen(false);
