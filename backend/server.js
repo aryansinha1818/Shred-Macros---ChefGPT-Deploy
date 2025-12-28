@@ -21,7 +21,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://shred-macros-chef-gpt-deploy.vercel.app",
+      "https://shred-macros-chef-gpt-git-12e54f-aryan-sinhas-projects-4577d1a5.vercel.app",
+      "https://shred-macros-chefgpt-deploy.onrender.com",
     ],
     credentials: true,
   })
