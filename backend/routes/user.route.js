@@ -7,7 +7,7 @@ const {
   getUser,
 } = require("../controller/user.controller");
 
-router.post("/signUp", userSignUp);
+router.post("/signup", userSignUp);
 router.post("/login", userLogin);
 router.get("/:id", getUser);
 
