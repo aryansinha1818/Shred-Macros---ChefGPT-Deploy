@@ -14,7 +14,9 @@ export default function RecipeDetails() {
         </div>
         <h3 className="title">{recipe.title}</h3>
         <img
-          src={`http://localhost:5001/images/${recipe.coverImage}`}
+          src={`${import.meta.env.VITE_API_BASE_URL}/images/${
+            recipe.coverImage
+          }`}
           width="220px"
           height="200px"
         ></img>

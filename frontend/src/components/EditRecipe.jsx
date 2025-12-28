@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+const API = import.meta.env.VITE_API_BASE_URL;
 
 export default function EditRecipe() {
   const [recipeData, setRecipeData] = useState({
@@ -16,7 +17,7 @@ export default function EditRecipe() {
 
   useEffect(() => {
     const getData = async () => {
-      await axios.get(`http://localhost:5001/recipe/${id}`).then((response) => {
+      await axios.get(`http://${API}/recipe/${id}`).then((response) => {
         let res = response.data;
         setRecipeData({
           title: res.title,
@@ -60,7 +61,7 @@ export default function EditRecipe() {
       formData.append("file", recipeData.file);
     }
 
-    await axios.put(`http://localhost:5001/recipe/${id}`, formData, {
+    await axios.put(`${API}/recipe/${id}`, formData, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },

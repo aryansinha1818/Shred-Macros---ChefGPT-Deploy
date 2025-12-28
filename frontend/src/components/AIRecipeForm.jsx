@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../index.css";
+const API = import.meta.env.VITE_API_BASE_URL;
 
 const AIRecipeChat = () => {
   const [type, setType] = useState("veg");
@@ -38,7 +39,7 @@ const AIRecipeChat = () => {
     setChatStarted(true);
 
     try {
-      const response = await axios.post("http://localhost:5001/ai-chef/", {
+      const response = await axios.post("http://${API}/ai-chef/", {
         type,
         ingredients: ingredients.split(",").map((i) => i.trim()),
         time: prepTime,
@@ -89,7 +90,7 @@ const AIRecipeChat = () => {
     setNewMessage("");
 
     try {
-      const response = await axios.post("http://localhost:5001/ai-chef/chat", {
+      const response = await axios.post("http://${API}/ai-chef/chat", {
         message: newMessage,
         session_id: sessionId,
         context: messages.map((msg) => ({

@@ -29,7 +29,6 @@ export default function AddFoodRecipe() {
       );
     }
   }, [location.state]);
-
   const onHandleChange = (e) => {
     let val =
       e.target.name === "ingredients"
@@ -62,12 +61,16 @@ export default function AddFoodRecipe() {
     }
 
     try {
-      await axios.post("http://localhost:5001/recipe", formData, {
-        headers: {
-          // "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/recipe`,
+        formData,
+        {
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
       navigate("/");
     } catch (err) {
       console.error("Error uploading recipe:", err);

@@ -4,6 +4,7 @@ import { BsStopwatchFill } from "react-icons/bs";
 import { FaHeart, FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import axios from "axios";
+const API = import.meta.env.VITE_API_BASE_URL;
 
 export default function RecipeItems({ recipes }) {
   const dataFromLoader = useLoaderData();
@@ -24,7 +25,7 @@ export default function RecipeItems({ recipes }) {
 
   const onDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5001/recipe/${id}`);
+      await axios.delete(`${API}/recipe/${id}`);
       const updated = allRecipes.filter((recipe) => recipe._id !== id);
       setAllRecipes(updated);
 
@@ -57,7 +58,7 @@ export default function RecipeItems({ recipes }) {
           onDoubleClick={() => navigate(`/recipe/${item._id}`)}
         >
           <img
-            src={`http://localhost:5001/images/${item.coverImage}`}
+            src={`${API}/images/${item.coverImage}`}
             width="120px"
             height="100px"
             alt={item.title}

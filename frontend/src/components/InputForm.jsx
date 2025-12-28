@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../App.css";
+const API = import.meta.env.VITE_API_BASE_URL;
 
 export default function InputForm({ setIsOpen }) {
   const [fullname, setFullname] = useState("");
@@ -25,10 +26,7 @@ export default function InputForm({ setIsOpen }) {
     }
 
     try {
-      const response = await axios.post(
-        `http://localhost:5001/user/${endpoint}`,
-        requestData
-      );
+      const response = await axios.post(`${API}/user/${endpoint}`, requestData);
 
       // Save auth data
       localStorage.setItem("token", response.data.token);

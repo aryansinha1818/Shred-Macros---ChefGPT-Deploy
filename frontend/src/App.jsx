@@ -8,10 +8,11 @@ import EditRecipe from "./components/EditRecipe";
 import RecipeItems from "./components/RecipeItems";
 import RecipeDetails from "./components/RecipeDetails";
 import AIRecipeForm from "./components/AIRecipeForm";
+const API = import.meta.env.VITE_API_BASE_URL;
 
 const getAllRecipes = async () => {
   try {
-    const res = await axios.get("http://localhost:5001/recipe");
+    const res = await axios.get("${API}/recipe");
     return res.data;
   } catch (error) {
     console.error(error.message);
@@ -22,7 +23,7 @@ const getAllRecipes = async () => {
 const getMyRecipe = async () => {
   try {
     const token = localStorage.getItem("token");
-    const res = await axios.get("http://localhost:5001/recipe/myRecipe", {
+    const res = await axios.get("${API}/recipe/myRecipe", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -40,13 +41,9 @@ const getFavRecipes = () => {
 
 const getRecipe = async ({ params }) => {
   try {
-    const recipeRes = await axios.get(
-      `http://localhost:5001/recipe/${params.id}`
-    );
+    const recipeRes = await axios.get(`${API}/recipe/${params.id}`);
     const recipe = recipeRes.data;
-    const userRes = await axios.get(
-      `http://localhost:5001/user/${recipe.createdBy}`
-    );
+    const userRes = await axios.get(`${API}/user/${recipe.createdBy}`);
     return { ...recipe, email: userRes.data.email };
   } catch (err) {
     console.error("Failed to fetch recipe details", err.message);
