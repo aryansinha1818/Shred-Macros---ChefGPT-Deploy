@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function AddFoodRecipe() {
   const location = useLocation();
   const navigate = useNavigate();
+  const API = import.meta.env.VITE_API_BACKEND;
   const [recipeData, setRecipeData] = useState({
     title: "",
     time: "",
@@ -25,7 +26,7 @@ export default function AddFoodRecipe() {
       });
 
       alert(
-        "Recipe fields have been pre-filled from your AI chat. Please add an image and submit!"
+        "Recipe fields have been pre-filled from your AI chat. Please add an image and submit!",
       );
     }
   }, [location.state]);
@@ -34,8 +35,8 @@ export default function AddFoodRecipe() {
       e.target.name === "ingredients"
         ? e.target.value.split(",")
         : e.target.name === "file"
-        ? e.target.files[0]
-        : e.target.value;
+          ? e.target.files[0]
+          : e.target.value;
     setRecipeData((pre) => ({ ...pre, [e.target.name]: val }));
   };
 
@@ -61,16 +62,12 @@ export default function AddFoodRecipe() {
     }
 
     try {
-      await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/recipe`,
-        formData,
-        {
-          headers: {
-            // "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      await axios.post(`${API}/recipe`, formData, {
+        headers: {
+          // "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
       navigate("/");
     } catch (err) {
       console.error("Error uploading recipe:", err);
