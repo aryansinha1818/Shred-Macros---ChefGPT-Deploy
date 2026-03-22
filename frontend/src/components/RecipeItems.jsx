@@ -10,7 +10,6 @@ const API = import.meta.env.VITE_API_BASE_URL;
 export default function RecipeItems({ recipes }) {
   const dataFromLoader = useLoaderData();
 
-  // ✅ Ensure initial state is array
   const [allRecipes, setAllRecipes] = useState(
     Array.isArray(recipes)
       ? recipes
@@ -25,7 +24,6 @@ export default function RecipeItems({ recipes }) {
   const navigate = useNavigate();
   const path = window.location.pathname === "/myRecipe";
 
-  // ✅ Only update if recipes is array
   useEffect(() => {
     if (Array.isArray(recipes)) {
       setAllRecipes(recipes);
@@ -72,7 +70,6 @@ export default function RecipeItems({ recipes }) {
 
   return (
     <div className="card-container">
-      {/* ✅ Safe mapping */}
       {Array.isArray(allRecipes) &&
         allRecipes.map((item, index) => (
           <div

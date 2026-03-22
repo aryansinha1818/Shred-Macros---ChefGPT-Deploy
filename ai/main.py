@@ -39,7 +39,7 @@ class RecipeRequest(BaseModel):
     time: str
     session_id: Optional[str] = None
 
-# /chart base model
+# /chat base model
 class ChatRequest(BaseModel):
     message: str
     session_id: str
