@@ -16,7 +16,7 @@ const ai = async (req, res) => {
       },
       {
         timeout: 30000,
-      }
+      },
     );
 
     res.json(response.data);
@@ -31,21 +31,29 @@ const ai = async (req, res) => {
 
 const aiChat = async (req, res) => {
   try {
+    if (!req.body.session_id) {
+      return res.status(400).json({
+        error: "session_id is required",
+        success: false,
+      });
+    }
+
     const response = await axios.post(
       `${AI_API_BASE}/chat`,
       {
         message: req.body.message,
         context: req.body.context || [],
-        session_id: req.body.session_id || "",
+        session_id: req.body.session_id,
       },
       {
         timeout: 30000,
-      }
+      },
     );
 
     res.json(response.data);
   } catch (error) {
-    console.error("AI Chat Error:", error.message);
+    console.error("AI Chat Error:", error.response?.data || error.message);
+
     res.status(500).json({
       error: error.response?.data?.detail || "Failed to process chat message",
       success: false,
@@ -62,7 +70,7 @@ const shareRecipe = async (req, res) => {
       },
       {
         timeout: 30000,
-      }
+      },
     );
 
     res.json(response.data);

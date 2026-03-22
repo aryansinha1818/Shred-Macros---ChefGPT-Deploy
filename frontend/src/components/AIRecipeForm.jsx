@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../index.css";
+
 const API = import.meta.env.VITE_API_BASE_URL;
 
 const AIRecipeChat = () => {
@@ -39,7 +40,7 @@ const AIRecipeChat = () => {
     setChatStarted(true);
 
     try {
-      const response = await axios.post(`${API}/generate-recipe/`, {
+      const response = await axios.post(`${API}/ai-chef`, {
         type,
         ingredients: ingredients.split(",").map((i) => i.trim()),
         time: prepTime,
@@ -56,7 +57,6 @@ const AIRecipeChat = () => {
 
       setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
-      console.error("AI Error:", error);
       const errorMessage = {
         id: Date.now() + 1,
         type: "ai",
@@ -107,7 +107,6 @@ const AIRecipeChat = () => {
       };
       setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
-      console.error("Chat Error:", error);
       const errorMessage = {
         id: Date.now() + 1,
         type: "ai",
@@ -144,6 +143,7 @@ const AIRecipeChat = () => {
         carbs: "N/A",
         fat: "N/A",
       };
+
       const nutritionInfo = `
 Nutritional Information:
 - Calories: ${macros.calories}
@@ -162,7 +162,6 @@ Nutritional Information:
 
       navigate("/addRecipe", { state: { sharedRecipe: recipeToShare } });
     } catch (error) {
-      console.error("Sharing failed:", error);
       alert(
         error.response?.data?.error || "Failed to prepare recipe for sharing",
       );
@@ -200,6 +199,7 @@ Nutritional Information:
             ) : (
               <div className="recipe-response">
                 <h3 className="recipe-title">{content.title}</h3>
+
                 {content.ingredients && content.ingredients.length > 0 && (
                   <div className="recipe-section">
                     <strong>Ingredients:</strong>
@@ -210,10 +210,12 @@ Nutritional Information:
                     </ul>
                   </div>
                 )}
+
                 <div className="recipe-section">
                   <strong>Instructions:</strong>
                   <p>{content.instructions}</p>
                 </div>
+
                 {content.macros && (
                   <div className="nutrition">
                     <h4>Nutrition Information</h4>
@@ -259,7 +261,7 @@ Nutritional Information:
               className="text-input"
               value={ingredients}
               onChange={(e) => setIngredients(e.target.value)}
-              placeholder="e.g., chicken, rice, vegetables"
+              placeholder="e.g., paneer, rice, spices"
             />
           </div>
 
@@ -289,14 +291,16 @@ Nutritional Information:
     <div className="chat-container">
       <div className="chat-header">
         <h2>AI Recipe Chef 🤖👨‍🍳</h2>
+
         <div className="header-buttons">
           <button
             className="share-btn"
             onClick={shareRecipe}
             disabled={isLoading}
           >
-            {isLoading ? "Sharing..." : "Share Recipe"}
+            Share Recipe
           </button>
+
           <button className="reset-btn" onClick={resetChat}>
             New Recipe
           </button>
@@ -305,13 +309,15 @@ Nutritional Information:
 
       <div className="chat-messages">
         {messages.map(renderMessage)}
+
         {isLoading && (
           <div className="message ai-message loading">
             <div className="message-content">
-              <p>AI Chef is cooking up a response... 🍳</p>
+              <p>AI Chef is cooking... 🍳</p>
             </div>
           </div>
         )}
+
         <div ref={messagesEndRef} />
       </div>
 
@@ -320,14 +326,14 @@ Nutritional Information:
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Ask me anything about the recipe..."
-          onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+          placeholder="Ask anything..."
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           disabled={isLoading}
         />
+
         <button
           onClick={sendMessage}
           disabled={isLoading || !newMessage.trim()}
-          className="send-btn"
         >
           Send
         </button>
