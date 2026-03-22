@@ -1,81 +1,49 @@
-# Logs
-logs
-*.log
+# -------------------- ENV --------------------
+.env
+.env.*
+*.local
+
+# -------------------- NODE --------------------
+node_modules/
+dist/
+build/
+.cache/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-# Node.js
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# Build output
-dist/
-build/
-.cache/
-
-# React
-*.env.local
-*.env.development.local
-*.env.test.local
-*.env.production.local
-
-# Logs
-logs
-*.log
-*.log.*
-*.out
-*.err
-
-# Python
+# -------------------- PYTHON --------------------
 __pycache__/
-*.py[cod]
+*.pyc
 *.pyo
 *.pyd
-*.pyc
 *.pkl
-.env
 venv/
 .venv/
+myvenv/
 
-# FastAPI specific
+# -------------------- DATABASE --------------------
 *.sqlite3
 *.db
 
-# IDE / Editor
-.vscode/
-.idea/
-*.swp
-.DS_Store
-*.sublime-workspace
-*.sublime-project
+# -------------------- LOGS --------------------
+logs/
+*.log
+*.out
+*.err
 
-# Testing
+# -------------------- TEST --------------------
 coverage/
-*.cover
 .pytest_cache/
 .jest/
 
-# Misc
+# -------------------- IDE --------------------
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# -------------------- MISC --------------------
 *.bak
 *.tmp

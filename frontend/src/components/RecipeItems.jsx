@@ -4,18 +4,32 @@ import { BsStopwatchFill } from "react-icons/bs";
 import { FaHeart, FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import axios from "axios";
+
 const API = import.meta.env.VITE_API_BASE_URL;
 
 export default function RecipeItems({ recipes }) {
   const dataFromLoader = useLoaderData();
-  const [allRecipes, setAllRecipes] = useState(recipes || dataFromLoader);
+
+  // ✅ Ensure initial state is array
+  const [allRecipes, setAllRecipes] = useState(
+    Array.isArray(recipes)
+      ? recipes
+      : Array.isArray(dataFromLoader)
+        ? dataFromLoader
+        : [],
+  );
+
   const [favItems, setFavItems] = useState([]);
   const [isFavRecipe, setIsFavRecipe] = useState(false);
-  const navigate = useNavigate();
-  const path = window.location.pathname === "/myRecipe" ? true : false;
 
+  const navigate = useNavigate();
+  const path = window.location.pathname === "/myRecipe";
+
+  // ✅ Only update if recipes is array
   useEffect(() => {
-    setAllRecipes(recipes);
+    if (Array.isArray(recipes)) {
+      setAllRecipes(recipes);
+    }
   }, [recipes]);
 
   useEffect(() => {
@@ -30,6 +44,7 @@ export default function RecipeItems({ recipes }) {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
+
       const updated = allRecipes.filter((recipe) => recipe._id !== id);
       setAllRecipes(updated);
 
@@ -43,61 +58,69 @@ export default function RecipeItems({ recipes }) {
 
   const favRecipe = (item) => {
     const isAlreadyFav = favItems.some((recipe) => recipe._id === item._id);
+
     let updatedFavs;
     if (isAlreadyFav) {
       updatedFavs = favItems.filter((recipe) => recipe._id !== item._id);
     } else {
       updatedFavs = [...favItems, item];
     }
+
     localStorage.setItem("fav", JSON.stringify(updatedFavs));
     setIsFavRecipe((prev) => !prev);
   };
 
   return (
     <div className="card-container">
-      {allRecipes?.map((item, index) => (
-        <div
-          key={index}
-          className="card"
-          onDoubleClick={() => navigate(`/recipe/${item._id}`)}
-        >
-          <img
-            src={`${API}/images/${item.coverImage}`}
-            width="120px"
-            height="100px"
-            alt={item.title}
-          />
-          <div className="card-body">
-            <div className="title">{item.title}</div>
-            <div className="icons">
-              <div className="timer">
-                <BsStopwatchFill /> {item.time}
-              </div>
-              {!path ? (
-                <FaHeart
-                  onClick={() => favRecipe(item)}
-                  style={{
-                    color: favItems.some((res) => res._id === item._id)
-                      ? "red"
-                      : "gray",
-                    cursor: "pointer",
-                  }}
-                />
-              ) : (
-                <div className="action">
-                  <Link to={`/editRecipe/${item._id}`} className="editIcon">
-                    <FaEdit />
-                  </Link>
-                  <MdDelete
-                    onClick={() => onDelete(item._id)}
-                    className="deleteIcon"
-                  />
+      {/* ✅ Safe mapping */}
+      {Array.isArray(allRecipes) &&
+        allRecipes.map((item, index) => (
+          <div
+            key={index}
+            className="card"
+            onDoubleClick={() => navigate(`/recipe/${item._id}`)}
+          >
+            <img
+              src={`${API}/images/${item.coverImage}`}
+              width="120px"
+              height="100px"
+              alt={item.title}
+            />
+
+            <div className="card-body">
+              <div className="title">{item.title}</div>
+
+              <div className="icons">
+                <div className="timer">
+                  <BsStopwatchFill /> {item.time}
                 </div>
-              )}
+
+                {!path ? (
+                  <FaHeart
+                    onClick={() => favRecipe(item)}
+                    style={{
+                      color: favItems.some((res) => res._id === item._id)
+                        ? "red"
+                        : "gray",
+                      cursor: "pointer",
+                    }}
+                  />
+                ) : (
+                  <div className="action">
+                    <Link to={`/editRecipe/${item._id}`} className="editIcon">
+                      <FaEdit />
+                    </Link>
+
+                    <MdDelete
+                      onClick={() => onDelete(item._id)}
+                      className="deleteIcon"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }
