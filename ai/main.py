@@ -13,7 +13,7 @@ import os
 import json
 from uuid import uuid4
 import asyncio  
-
+# load
 load_dotenv()
 
 app = FastAPI()
@@ -81,8 +81,8 @@ def generate_recipe_prompt(type: str, ingredients: List[str], time: str) -> str:
         "Provide detailed step-by-step instructions. "
         "Calculate and include accurate nutritional information (macros) for the entire recipe."
     )
-
-@app.post('/generate-recipe')
+# generate-recipe
+@app.post('/ai-chef')
 async def generate_recipe(data: RecipeRequest):
 
     session_id = data.session_id or str(uuid4())
@@ -119,11 +119,6 @@ async def generate_recipe(data: RecipeRequest):
 
             print(f"Failed to parse recipe: {e}")
             recipe_data = {
-
-
-
-
-
                 "title": f"{data.type.capitalize()} Recipe",
                 "ingredients": data.ingredients,
                 "instructions": response.content,
@@ -164,7 +159,8 @@ async def generate_recipe(data: RecipeRequest):
         print(f"Error generating recipe: {e}")
         raise HTTPException(500, "Failed to generate recipe")
 
-@app.post('/chat')
+# chat
+@app.post('/ai-chef/chat')
 async def chat(data: ChatRequest):
     
     if not data.message:
@@ -250,7 +246,8 @@ async def chat(data: ChatRequest):
         print(f"Chat error: {e}")
         raise HTTPException(500, "Failed to process chat message")
 
-@app.post("/share-recipe")
+# share-recipe
+@app.post("/ai-chef/share")
 async def share(data: ShareRequest):
     try:
         shared_recipe = {
