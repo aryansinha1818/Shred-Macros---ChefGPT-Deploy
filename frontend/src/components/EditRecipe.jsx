@@ -35,8 +35,8 @@ export default function EditRecipe() {
       e.target.name === "ingredients"
         ? e.target.value.split(",")
         : e.target.name === "file"
-        ? e.target.files[0]
-        : e.target.value;
+          ? e.target.files[0]
+          : e.target.value;
     setRecipeData((pre) => ({ ...pre, [e.target.name]: val }));
   };
   const onHandleSubmit = async (e) => {
@@ -52,9 +52,11 @@ export default function EditRecipe() {
         ? recipeData.ingredients
         : recipeData.ingredients.split(",");
 
-      ingredientsArray.forEach((item) =>
-        formData.append("ingredients", item.trim())
-      );
+      // ingredientsArray.forEach((item) =>
+      //   formData.append("ingredients", item.trim())
+      // );
+
+      formData.append("ingredients", JSON.stringify(ingredientsArray));
     }
 
     if (recipeData.file) {

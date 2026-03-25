@@ -111,8 +111,13 @@ const AIRecipeChat = () => {
         id: Date.now() + 1,
         type: "ai",
         content:
-          error.response?.data?.error ||
-          "Sorry, I couldn't process your message.",
+          // error.response?.data?.error ||
+          // "Sorry, I couldn't process your message.",
+          typeof error.response?.data?.error === "string"
+            ? error.response.data.error
+            : JSON.stringify(
+                error.response?.data?.error || "Something went wrong",
+              ),
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMessage]);

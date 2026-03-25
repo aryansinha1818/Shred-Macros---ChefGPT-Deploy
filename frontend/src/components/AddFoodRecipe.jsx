@@ -56,9 +56,10 @@ export default function AddFoodRecipe() {
         ? recipeData.ingredients
         : recipeData.ingredients.split(",");
 
-      ingredientsArray.forEach((item) => {
-        formData.append("ingredients", item.trim());
-      });
+      // ingredientsArray.forEach((item) => {
+      //   formData.append("ingredients", item.trim());
+      // });
+      formData.append("ingredients", JSON.stringify(ingredientsArray));
     }
 
     try {
