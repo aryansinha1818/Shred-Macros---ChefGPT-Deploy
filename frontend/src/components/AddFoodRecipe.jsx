@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function AddFoodRecipe() {
   const location = useLocation();
   const navigate = useNavigate();
-  const API = import.meta.env.VITE_API_BACKEND;
+  const API = import.meta.env.VITE_API_BASE_URL;
   const [recipeData, setRecipeData] = useState({
     title: "",
     time: "",
