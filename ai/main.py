@@ -82,7 +82,7 @@ def generate_recipe_prompt(type: str, ingredients: List[str], time: str) -> str:
         "Calculate and include accurate nutritional information (macros) for the entire recipe."
     )
 # generate-recipe
-@app.post('/ai-chef')
+@app.post('/generate-recipe')
 async def generate_recipe(data: RecipeRequest):
 
     session_id = data.session_id or str(uuid4())
@@ -160,7 +160,7 @@ async def generate_recipe(data: RecipeRequest):
         raise HTTPException(500, "Failed to generate recipe")
 
 # chat
-@app.post('/ai-chef/chat')
+@app.post('/chat')
 async def chat(data: ChatRequest):
     
     if not data.message:
@@ -247,7 +247,7 @@ async def chat(data: ChatRequest):
         raise HTTPException(500, "Failed to process chat message")
 
 # share-recipe
-@app.post("/ai-chef/share")
+@app.post("/share-recipe")
 async def share(data: ShareRequest):
     try:
         shared_recipe = {
