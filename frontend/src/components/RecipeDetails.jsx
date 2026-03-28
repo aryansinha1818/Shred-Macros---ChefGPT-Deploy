@@ -4,7 +4,7 @@ import { useLoaderData } from "react-router-dom";
 
 export default function RecipeDetails() {
   const recipe = useLoaderData();
-  console.log(recipe);
+
   return (
     <>
       <div className="outer-container">
