@@ -40,7 +40,7 @@ const AIRecipeChat = () => {
     setChatStarted(true);
 
     try {
-      const response = await axios.post(`${API}/ai-chef`, {
+      const response = await axios.post(`${API}/generate-recipe`, {
         type,
         ingredients: ingredients.split(",").map((i) => i.trim()),
         time: prepTime,

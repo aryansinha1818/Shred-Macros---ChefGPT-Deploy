@@ -85,7 +85,7 @@ const router = createBrowserRouter([
         loader: getRecipe,
       },
       {
-        path: "/ai-chef",
+        path: "/generateRecipe",
         element: <AIRecipeForm />,
       },
     ],

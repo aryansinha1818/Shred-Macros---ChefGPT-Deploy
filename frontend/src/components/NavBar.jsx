@@ -47,7 +47,9 @@ export default function NavBar() {
           </li>
 
           <li onClick={() => isLogin && setIsOpen(true)}>
-            <NavLink to={!isLogin ? "/ai-chef" : "/"}>Ask AI Chef!</NavLink>
+            <NavLink to={!isLogin ? "/generateRecipe" : "/"}>
+              Ask AI Chef!
+            </NavLink>
           </li>
 
           <li onClick={checkLogin}>
