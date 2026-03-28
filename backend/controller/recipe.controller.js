@@ -19,11 +19,13 @@ const getRecipes = async (req, res) => {
   if (data) return res.json(data);
   else return "Your Recipe Book is empty";
 };
+
 const getRecipe = async (req, res) => {
   const data = await Recipes.findById(req.params.id);
   if (data) return res.json(data);
   else return res.status(404).json({ error: "Recipe not found" });
 };
+
 const addRecipe = async (req, res) => {
   try {
     const { title, time, instructions, ingredients } = req.body;
@@ -33,17 +35,23 @@ const addRecipe = async (req, res) => {
       return res.status(400).json({ msg: "All fields are required" });
     }
 
-    const ingredientsArray = Array.isArray(ingredients)
-      ? ingredients
-      : typeof ingredients === "string"
-      ? ingredients.split(",")
-      : [];
+    let ingredientsArray = [];
+
+    if (Array.isArray(ingredients)) {
+      ingredientsArray = ingredients;
+    } else if (typeof ingredients === "string") {
+      try {
+        ingredientsArray = JSON.parse(ingredients);
+      } catch {
+        ingredientsArray = ingredients.split(",");
+      }
+    }
 
     const newRecipe = new Recipes({
       title,
       time,
       instructions,
-      ingredients: ingredientsArray.map((i) => i.trim()), // Clean up ingredients
+      ingredients: ingredientsArray.map((i) => i.trim()),
       coverImage: file.filename,
       createdBy: req.user.id,
     });
@@ -69,32 +77,65 @@ const getMyRecipes = async (req, res) => {
 const editRecipe = async (req, res) => {
   const { title, ingredients, instructions, time } = req.body;
   let data = await Recipes.findById(req.params.id);
+
   try {
     if (data) {
-      // cause when we upload we get the filename and when we dont it is blank
-      // varna old laga do
+      if (data.createdBy.toString() !== req.user.id) {
+        return res.status(403).json({ message: "Not authorized" });
+      }
+
       let coverImage = req.file?.filename
         ? req.file?.filename
         : data.coverImage;
 
+      let parsedIngredients = [];
+
+      if (Array.isArray(ingredients)) {
+        parsedIngredients = ingredients;
+      } else if (typeof ingredients === "string") {
+        try {
+          parsedIngredients = JSON.parse(ingredients);
+        } catch {
+          parsedIngredients = ingredients.split(",");
+        }
+      }
+
       await Recipes.findByIdAndUpdate(
         req.params.id,
-        { ...req.body, coverImage },
-
-        { new: true }
+        {
+          title,
+          ingredients: parsedIngredients.map((i) => i.trim()),
+          instructions,
+          time,
+          coverImage,
+        },
+        { new: true },
       );
-      res.json({ title, ingredients, instructions, time });
+
+      res.json({ title, ingredients: parsedIngredients, instructions, time });
     }
   } catch (e) {
     return res.status(404).json({ message: "error" });
   }
 };
+
 const deleteRecipe = async (req, res) => {
   try {
-    await Recipes.deleteOne({ _id: req.params._id });
+    const recipe = await Recipes.findById(req.params.id);
+
+    if (!recipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    if (recipe.createdBy.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    await Recipes.deleteOne({ _id: req.params.id });
+
     res.json({ status: "success" });
   } catch (e) {
-    return res.status(404).json({ message: "error" });
+    return res.status(500).json({ message: "error" });
   }
 };
 
